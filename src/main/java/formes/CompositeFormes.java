@@ -1,7 +1,6 @@
 package formes;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * La classe composite des formes.
@@ -17,7 +16,7 @@ public class CompositeFormes implements Mover, Printer {
   /**
    * Liste d'enfants du composite.
    */
-  private List<Forme> childsFormes = new ArrayList<Forme>();
+  private ArrayList<Forme> childsFormes = new ArrayList<Forme>();
 
   /**
    * Constructeur avec uniquement le nom. Peut être utilisé si il n y a pas encore de liste de
@@ -30,7 +29,7 @@ public class CompositeFormes implements Mover, Printer {
     this.childsFormes.clear();
   }
 
-  public CompositeFormes(String name, List<Forme> childsFormes) {
+  public CompositeFormes(String name, ArrayList<Forme> childsFormes) {
     this.name = name;
     this.childsFormes = childsFormes;
   }
@@ -39,7 +38,7 @@ public class CompositeFormes implements Mover, Printer {
     return name;
   }
 
-  public List<Forme> getChildsFormes() {
+  public ArrayList<Forme> getChildsFormes() {
     return childsFormes;
   }
 
@@ -72,7 +71,7 @@ public class CompositeFormes implements Mover, Printer {
 
   /**
    * Déplacer plusieurs formes à la fois.
-   * 
+   *
    * @see Mover#move(int, int)
    */
   @Override
@@ -84,7 +83,7 @@ public class CompositeFormes implements Mover, Printer {
 
   /**
    * Afficher toute la liste du groupe.
-   * 
+   *
    * @see Printer#print()
    */
   @Override

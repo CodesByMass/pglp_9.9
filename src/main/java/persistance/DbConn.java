@@ -91,16 +91,16 @@ public class DbConn {
           + "x int NOT NULL , " + "y int NOT NULL , " + "side1 int NOT NULL, "
           + "side2 int NOT NULL, " + "side3 int NOT NULL, " + "PRIMARY KEY (nom))");
       // Groupe
-      state.addBatch("CREATE TABLE Groupe(NomGroupe " + "VARCHAR(255) NOT NULL , "
+      state.addBatch("CREATE TABLE Groupe(nomGroupe " + "VARCHAR(255) NOT NULL , "
           + "PRIMARY KEY (NomGroupe))");
-      // Liste formes
       // Groupe
       state.addBatch(
           "CREATE TABLE Forme(NomForme " + "VARCHAR(255) NOT NULL , " + "PRIMARY KEY (NomForme))");
       // Personnel rattaché à un groupe.
       state.addBatch("CREATE TABLE  FaitPartie( nomGroupe varchar(255) NOT NULL ,"
-          + "nomForme VARCHAR(255) NOT NULL , " + "PRIMARY KEY (nomGroupe,nomForme), "
-          + " CONSTRAINT fk_groupe FOREIGN KEY (nomGroupe) REFERENCES Groupe(NomGroupe) )");
+          + "nomForme VARCHAR(255) NOT NULL , " + "typeForme VARCHAR(255) NOT NULL , "
+          + "PRIMARY KEY (nomGroupe,nomForme), "
+          + " CONSTRAINT fk_groupe FOREIGN KEY (nomGroupe) REFERENCES Groupe(NomGroupe) ON DELETE CASCADE )");
 
       state.executeBatch();
       state.close();
