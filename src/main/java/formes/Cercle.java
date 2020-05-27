@@ -1,5 +1,11 @@
 package formes;
 
+/**
+ * Réprésentation de la forme cercle.
+ *
+ * @author Mass'
+ *
+ */
 public class Cercle extends Forme {
 
   private int rayon;

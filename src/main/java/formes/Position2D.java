@@ -1,6 +1,7 @@
 package formes;
 
 /**
+ * Position sur une espace à deux dimensions x et y.
  *
  * @author Mass'
  *
@@ -42,7 +43,11 @@ public class Position2D {
     return "(" + x + ", " + y + ")";
   }
 
-
+  /**
+   * Utilisé pour la méthode equals.
+   * 
+   * @see Position2D#equals(Object)
+   */
   @Override
   public int hashCode() {
     final int prime = 31;
@@ -52,7 +57,9 @@ public class Position2D {
     return result;
   }
 
-
+  /**
+   * Comparaison utile en cas de formes sur la même posiiton.
+   */
   @Override
   public boolean equals(Object obj) {
     if (this == obj)
