@@ -1,7 +1,7 @@
 package formes;
 
 /**
- * Position sur une espace à deux dimensions x et y.
+ * Position sur un espace Ã  deux dimensions x et y.
  *
  * @author Mass'
  *
@@ -44,8 +44,8 @@ public class Position2D {
   }
 
   /**
-   * Utilisé pour la méthode equals.
-   * 
+   * UtilisÃ© pour la mÃ©thode equals.
+   *
    * @see Position2D#equals(Object)
    */
   @Override
@@ -58,21 +58,26 @@ public class Position2D {
   }
 
   /**
-   * Comparaison utile en cas de formes sur la même posiiton.
+   * Comparaison utile en cas de formes sur la mÃªme posiiton.
    */
   @Override
   public boolean equals(Object obj) {
-    if (this == obj)
+    if (this == obj) {
       return true;
-    if (obj == null)
+    }
+    if (obj == null) {
       return false;
-    if (getClass() != obj.getClass())
+    }
+    if (getClass() != obj.getClass()) {
       return false;
+    }
     Position2D other = (Position2D) obj;
-    if (x != other.x)
+    if (x != other.x) {
       return false;
-    if (y != other.y)
+    }
+    if (y != other.y) {
       return false;
+    }
     return true;
   }
 

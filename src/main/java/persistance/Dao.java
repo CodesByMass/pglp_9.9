@@ -5,35 +5,34 @@ import ui.NonExistentFormeException;
 public abstract class Dao<T> {
 
   /**
-   * Ajoute une forme à la base de données.
+   * Ajoute une forme ï¿½ la base de donnï¿½es.
    *
-   * @param t l'objet à ajouter
-   * @throws NonExistentFormeException
+   * @param t l'objet ï¿½ ajouter
    * @throws NonExistentFormeException si la forme n'existe pas ou n'est pas dans le groupe.
    */
   public abstract void create(T t) throws NonExistentFormeException;
 
   /**
-   * Modifie une forme dans la base de données.
+   * Modifie une forme dans la base de donnï¿½es.
    *
-   * @param t la forme à modifier
+   * @param t la forme ï¿½ modifier
    * @throws NonExistentFormeException si la forme n'existe pas ou n'est pas dans le groupe.
    */
   public abstract void update(T t) throws NonExistentFormeException;
 
   /**
-   * Supprime une forme dans la base de données.
+   * Supprime une forme dans la base de donnï¿½es.
    *
-   * @param t la forme à supprimer.
+   * @param t la forme ï¿½ supprimer.
    * @throws NonExistentFormeException si la forme n'existe pas ou n'est pas dans le groupe.
    */
   public abstract void delete(T t) throws NonExistentFormeException;
 
   /**
-   * Récupère une forme de la base données.
+   * Rï¿½cupï¿½re une forme de la base donnï¿½es.
    *
-   * @param nom de la forme à récupérer.
-   * @return la forme demandée
+   * @param nom de la forme ï¿½ rï¿½cupï¿½rer.
+   * @return la forme demandï¿½e
    * @throws NonExistentFormeException si la forme n'existe pas ou n'est pas dans le groupe.
    */
   public abstract T read(String nom) throws NonExistentFormeException;

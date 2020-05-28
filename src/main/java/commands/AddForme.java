@@ -19,7 +19,7 @@ public class AddForme implements Commande {
     CompositeFormes g = DaoFactory.getCompositeFormeDao().read(nomGroupe);
     Forme f = DaoFactory.getFormeDao().read(nomForme);
     g.add(f);
-    // Je supprime puis réajoute car l'update de groupe modifie les positions des formes.
+    // Je supprime puis rajoute car l'update de groupe modifie les positions des formes.
     DaoFactory.getCompositeFormeDao().delete(g);
     DaoFactory.getCompositeFormeDao().create(g);
 

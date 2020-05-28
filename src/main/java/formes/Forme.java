@@ -1,7 +1,7 @@
 package formes;
 
 /**
- * Superclasse des formes gÈographiques.
+ * Superclasse des formes g√©om√©triques.
  *
  * @author Mass'
  *
@@ -19,7 +19,7 @@ public abstract class Forme implements Mover, Printer {
   public abstract void move(int x, int y);
 
   /**
-   * Affiche les coordonnÈes de la forme.
+   * Affiche les coordonn√©es de la forme.
    */
   @Override
   public abstract void print();

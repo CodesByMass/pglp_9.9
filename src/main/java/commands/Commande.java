@@ -3,7 +3,7 @@ package commands;
 import ui.NonExistentFormeException;
 
 /**
- * L'interface commande avec la méthode execute.
+ * L'interface commande avec la mÃ©thode execute.
  *
  * @author Mass'
  *

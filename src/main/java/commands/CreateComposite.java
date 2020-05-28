@@ -1,13 +1,13 @@
 package commands;
 
-import java.util.ArrayList;
 import formes.CompositeFormes;
 import formes.Forme;
+import java.util.ArrayList;
 import persistance.DaoFactory;
 import ui.NonExistentFormeException;
 
 /**
- * Crée un groupe avec les formes déjà existantes.
+ * Crï¿½e un groupe avec les formes dï¿½jï¿½ existantes.
  *
  * @see ui.DrawingTui#createComposite(String)
  *

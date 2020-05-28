@@ -1,7 +1,7 @@
 package formes;
 
 /**
- * Classe représentant un carré.
+ * Classe reprï¿½sentant un carrï¿½.
  *
  * @author Mass'
  *
@@ -9,11 +9,18 @@ package formes;
 public class Carre extends Forme {
 
   /**
-   * Coté d'un carré.
+   * Cotï¿½ d'un carrï¿½.
    */
   private int side;
   private Position2D position;
 
+  /**
+   * Constructeur de la forme carrÃ©.
+   *
+   * @param name du carrÃ©
+   * @param position 2D
+   * @param side taille des cotÃ©s.
+   */
   public Carre(String name, Position2D position, int side) {
     super(name);
     this.position = position;
@@ -33,7 +40,7 @@ public class Carre extends Forme {
 
 
   /**
-   * Déplacer l'objet selon les coordonnées mis en paramètres.
+   * Dï¿½placer l'objet selon les coordonnï¿½es mis en paramï¿½tres.
    */
   @Override
   public void move(int x, int y) {
@@ -43,8 +50,8 @@ public class Carre extends Forme {
 
   @Override
   public void print() {
-    System.out.println("Carré " + "(" + this.getName() + "=" + this.getPosition().toString()
-        + ",coté = " + this.getSide() + ")");
+    System.out.println("CarrÃ© " + "(" + this.getName() + "=" + this.getPosition().toString()
+        + ",cotÃ© = " + this.getSide() + ")");
 
   }
 

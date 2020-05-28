@@ -6,6 +6,14 @@ public class Rectangle extends Forme {
   private int longueur;
   private int largeur;
 
+  /**
+   * Constructeur de Rectangle.
+   *
+   * @param name de la forme
+   * @param position x et y.
+   * @param longueur en pixels
+   * @param largeur en pixels
+   */
   public Rectangle(String name, Position2D position, int longueur, int largeur) {
     super(name);
     this.position = position;
@@ -27,7 +35,7 @@ public class Rectangle extends Forme {
   }
 
   /**
-   * Déplacer l'objet selon les coordonnées mis en paramètres.
+   * Dï¿½placer l'objet selon les coordonnï¿½es mis en paramï¿½tres.
    */
   @Override
   public void move(int x, int y) {

@@ -1,16 +1,16 @@
 package persistance;
 
+import formes.Carre;
+import formes.Position2D;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import formes.Carre;
-import formes.Position2D;
 import ui.NonExistentFormeException;
 
 /**
- * Implémentation de DAO avec Derby pour la classe Carré.
+ * Implï¿½mentation de DAO avec Derby pour la classe Carrï¿½.
  *
  * @see Carre
  *
@@ -20,7 +20,7 @@ import ui.NonExistentFormeException;
 public class DaoCarre extends Dao<Carre> {
 
   /**
-   * Chaine de caractere de la base de données.
+   * Chaine de caractere de la base de donnï¿½es.
    */
   private static String dburl = DbConn.dburl;
 
@@ -36,7 +36,7 @@ public class DaoCarre extends Dao<Carre> {
       prepare.setInt(4, t.getSide());
       int result = prepare.executeUpdate();
       if (result == 1) {
-        System.out.println("L'ajout du carré s'est bien déroulé");
+        System.out.println("L'ajout du carrÃ© s'est bien dÃ©roulÃ©");
         DaoFactory.getFormeDao().create(t);
       }
       prepare.close();
@@ -47,9 +47,11 @@ public class DaoCarre extends Dao<Carre> {
 
   @Override
   public void update(Carre t) throws NonExistentFormeException {
-    try (Connection conn = DriverManager.getConnection(dburl)) {
-      PreparedStatement prepare =
-          conn.prepareStatement("UPDATE Carre SET x = '?',y = '?' WHERE nom = '?'");
+    PreparedStatement prepare = null;
+    Connection conn = null;
+    try {
+      conn = DriverManager.getConnection(dburl);
+      prepare = conn.prepareStatement("UPDATE Carre SET x = ?,y = ? WHERE nom = ?");
       prepare.setInt(1, t.getPosition().getX());
       prepare.setInt(2, t.getPosition().getY());
       prepare.setString(3, t.getName());
@@ -57,10 +59,27 @@ public class DaoCarre extends Dao<Carre> {
       if (result != 1) {
         throw new NonExistentFormeException();
       } else {
-        System.out.println(" Le carré a bien été modifié");
+        System.out.println(" Le carrÃ© a bien Ã©tÃ© modifiÃ©");
       }
     } catch (SQLException e) {
       e.printStackTrace();
+    } finally {
+      if (prepare != null) {
+        try {
+          prepare.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+
+      if (conn != null) {
+        try {
+          conn.close();
+        } catch (SQLException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
     }
 
   }
@@ -68,17 +87,38 @@ public class DaoCarre extends Dao<Carre> {
   @Override
   public void delete(Carre t) throws NonExistentFormeException {
 
-    try (Connection conn = DriverManager.getConnection(dburl)) {
-      PreparedStatement prepare = conn.prepareStatement("DELETE FROM Carre WHERE nom = '?'");
+    PreparedStatement prepare = null;
+    Connection conn = null;
+    try {
+      conn = DriverManager.getConnection(dburl);
+      prepare = conn.prepareStatement("DELETE FROM Carre WHERE nom = ?");
       prepare.setString(1, t.getName());
       int result = prepare.executeUpdate();
       if (result == 1) {
-        System.out.println("Le carré été supprimé");
+        System.out.println("Le carrÃ© a Ã©tÃ© supprimÃ©");
+        DaoFactory.getFormeDao().delete(t);
       } else {
         throw new NonExistentFormeException();
       }
     } catch (SQLException e) {
       e.printStackTrace();
+    } finally {
+      if (prepare != null) {
+        try {
+          prepare.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+
+      if (conn != null) {
+        try {
+          conn.close();
+        } catch (SQLException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
     }
 
   }
@@ -86,22 +126,51 @@ public class DaoCarre extends Dao<Carre> {
   @Override
   public Carre read(String nom) throws NonExistentFormeException {
     Carre c = null;
-    try (Connection conn = DriverManager.getConnection(dburl)) {
-      PreparedStatement prepare = conn.prepareStatement("SELECT * FROM Carre WHERE nom = '?'");
+    PreparedStatement prepare = null;
+    Connection conn = null;
+    ResultSet result = null;
+    try {
+      conn = DriverManager.getConnection(dburl);
+      prepare = conn.prepareStatement("SELECT * FROM Carre WHERE nom = ?");
       prepare.setString(1, nom);
-      ResultSet result = prepare.executeQuery();
+      result = prepare.executeQuery();
 
       if (!result.next()) {
-        System.out.println("Le carré recherché n'existe pas");
-        throw new NonExistentFormeException();
+        System.out.println("Le carrÃ© recherchÃ© n'existe pas");
+
       } else {
-        // Crée un carrée.
+        // CrÃ©e un carrÃ©e
         c = new Carre(result.getString("nom"),
             new Position2D(result.getInt("x"), result.getInt("y")), result.getInt("side"));
-        prepare.close();
+        result.close();
       }
     } catch (SQLException e) {
       e.printStackTrace();
+    } finally {
+      if (prepare != null) {
+        try {
+          prepare.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+
+      if (conn != null) {
+        try {
+          conn.close();
+        } catch (SQLException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
+      if (result != null) {
+        try {
+          result.close();
+        } catch (SQLException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
     }
 
     return c;

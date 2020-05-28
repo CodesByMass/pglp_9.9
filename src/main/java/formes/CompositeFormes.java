@@ -19,7 +19,7 @@ public class CompositeFormes extends Forme implements Mover, Printer {
   private ArrayList<Forme> childsFormes = new ArrayList<Forme>();
 
   /**
-   * Constructeur avec uniquement le nom. Peut être utilisé si il n y a pas encore de liste de
+   * Constructeur avec uniquement le nom. Peut ï¿½tre utilisï¿½ si il n y a pas encore de liste de
    * formes.
    *
    * @param name du groupe.
@@ -34,24 +34,22 @@ public class CompositeFormes extends Forme implements Mover, Printer {
     this.childsFormes = childsFormes;
   }
 
-  @Override
-  public String getName() {
-    return name;
-  }
+
 
   public ArrayList<Forme> getChildsFormes() {
     return childsFormes;
   }
 
 
+
   /**
-   * Ajoute une forme à la liste d'enfants.
+   * Ajoute une forme ï¿½ la liste d'enfants.
    *
-   * @param f la forme à ajouter.
+   * @param f la forme ï¿½ ajouter.
    */
   public void add(Forme f) {
     if (f == null || childsFormes.contains(f)) {
-      throw new IllegalArgumentException("La forme n'a pas pu être ajoutée");
+      throw new IllegalArgumentException("La forme n'a pas pu ï¿½tre ajoutï¿½e");
     } else {
       this.childsFormes.add(f);
     }
@@ -60,7 +58,7 @@ public class CompositeFormes extends Forme implements Mover, Printer {
   /**
    * Supprime une forme de la liste.
    *
-   * @param f la forme à supprimer.
+   * @param f la forme ï¿½ supprimer.
    */
   public void delete(Forme f) {
     if (!childsFormes.contains(f)) {
@@ -71,7 +69,7 @@ public class CompositeFormes extends Forme implements Mover, Printer {
   }
 
   /**
-   * Déplacer plusieurs formes à la fois.
+   * Dï¿½placer plusieurs formes ï¿½ la fois.
    *
    * @see Mover#move(int, int)
    */

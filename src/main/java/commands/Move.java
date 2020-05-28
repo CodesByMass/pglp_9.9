@@ -10,7 +10,7 @@ import persistance.DaoFactory;
 import ui.NonExistentFormeException;
 
 /**
- * Commande de dÈplacement des formes.
+ * Commande de d√©placement des formes.
  *
  * @author Mass'
  *
@@ -22,6 +22,14 @@ public class Move implements Commande {
   private int x;
   private int y;
 
+  /**
+   * Constructeur de Move.
+   *
+   * @param name de la forme
+   * @param type de la forme
+   * @param x coordon√©e position
+   * @param y coordon√©e position
+   */
   public Move(String name, String type, int x, int y) {
 
     this.name = name;
@@ -31,34 +39,34 @@ public class Move implements Commande {
   }
 
   /**
-   * RÈcupËre le type de forme ou le groupes ‡ dÈplacer.
+   * R√©cup√®re le type de forme ou le groupes √† d√©placer.
    */
   @Override
   public void execute() throws NonExistentFormeException {
     switch (type) {
       case "Cercle":
-        Dao<Cercle> DaoCercle = DaoFactory.getCercleDao();
-        Cercle cercle = DaoCercle.read(name);
+        Dao<Cercle> daoCercle = DaoFactory.getCercleDao();
+        Cercle cercle = daoCercle.read(name);
         cercle.move(x, y);
-        DaoCercle.update(cercle);
+        daoCercle.update(cercle);
         break;
       case "Carre":
-        Dao<Carre> DaoCarre = DaoFactory.getCarreDao();
-        Carre carre = DaoCarre.read(name);
+        Dao<Carre> daoCarre = DaoFactory.getCarreDao();
+        Carre carre = daoCarre.read(name);
         carre.move(x, y);
-        DaoCarre.update(carre);
+        daoCarre.update(carre);
         break;
       case "Rectangle":
-        Dao<Rectangle> DaoRectangle = DaoFactory.getRectangleDao();
-        Rectangle rectangle = DaoRectangle.read(name);
+        Dao<Rectangle> daoRectangle = DaoFactory.getRectangleDao();
+        Rectangle rectangle = daoRectangle.read(name);
         rectangle.move(x, y);
-        DaoRectangle.update(rectangle);
+        daoRectangle.update(rectangle);
         break;
       case "Triangle":
-        Dao<Triangle> DaoTriangle = DaoFactory.getTriangleDao();
-        Triangle triangle = DaoTriangle.read(name);
+        Dao<Triangle> daoTriangle = DaoFactory.getTriangleDao();
+        Triangle triangle = daoTriangle.read(name);
         triangle.move(x, y);
-        DaoTriangle.update(triangle);
+        daoTriangle.update(triangle);
         break;
       case "CompositeFormes":
         Dao<CompositeFormes> daoComposite = DaoFactory.getCompositeFormeDao();
@@ -66,6 +74,9 @@ public class Move implements Commande {
         cf.move(x, y);
         daoComposite.update(cf);
         break;
+      default:
+        throw new NonExistentFormeException();
+
     }
   }
 

@@ -1,7 +1,6 @@
 package persistance;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,7 +8,7 @@ import java.sql.Statement;
 import java.util.Properties;
 
 /**
- * Connexion à la database.
+ * Connexion ï¿½ la database.
  *
  * @author Mass'
  *
@@ -37,45 +36,38 @@ public class DbConn {
   }
 
   /**
-   * Création des tables, si non créées.
+   * CrÃ©ation des tables, si non crï¿½ï¿½es.
    *
    * @throws SQLException if something happens
    */
   public final void createTables() throws SQLException {
-    Connection conn = DriverManager.getConnection(dburl);
-    Statement state = conn.createStatement();
-    DatabaseMetaData databaseMetadata = conn.getMetaData();
-    ResultSet resultSet = databaseMetadata.getTables(null, null, "" + "FAITPARTIE", null);
+    Connection conn = null;
+    Statement state = null;
+    ResultSet resultSet = null;
     try {
-      if (resultSet.next()) {
-        state.addBatch("DROP TABLE FaitPartie");
-      }
-      resultSet = databaseMetadata.getTables(null, null, "GROUPE", null);
-
-      if (resultSet.next()) {
-        state.addBatch("DROP TABLE Groupe ");
-      }
-      resultSet = databaseMetadata.getTables(null, null, "" + "CARRE", null);
-
-      if (resultSet.next()) {
-        state.addBatch("DROP TABLE Carre");
-      }
-      resultSet = databaseMetadata.getTables(null, null, "" + "RECTANGLE", null);
-      if (resultSet.next()) {
-        state.addBatch("DROP TABLE Rectangle");
-      }
-      resultSet = databaseMetadata.getTables(null, null, "TRIANGLE", null);
-
-      if (resultSet.next()) {
-        state.addBatch("DROP TABLE Triangle ");
-      }
-      resultSet = databaseMetadata.getTables(null, null, "CERCLE", null);
-
-      if (resultSet.next()) {
-        state.addBatch("DROP TABLE Cercle ");
-      }
-
-
+      conn = DriverManager.getConnection(dburl);
+      state = conn.createStatement();
+      /*
+       * resultSet = databaseMetadata.getTables(null, null, "FaitPartie", null);
+       *
+       * if (resultSet.next()) { state.addBatch("DROP TABLE FaitPartie"); } else {
+       * System.out.println("Ca ne marche pas"); } resultSet = databaseMetadata.getTables(null,
+       * null, "Groupe", null);
+       *
+       * if (resultSet.next()) { state.addBatch("DROP TABLE Groupe "); } resultSet =
+       * databaseMetadata.getTables(null, null, "Carre", null);
+       *
+       * if (resultSet.next()) { state.addBatch("DROP TABLE Carre"); } resultSet =
+       * databaseMetadata.getTables(null, null, "Rectangle", null); if (resultSet.next()) {
+       * state.addBatch("DROP TABLE Rectangle"); } resultSet = databaseMetadata.getTables(null,
+       * null, "Triangle", null);
+       *
+       * if (resultSet.next()) { state.addBatch("DROP TABLE Triangle "); } resultSet =
+       * databaseMetadata.getTables(null, null, "Cercle", null);
+       *
+       * if (resultSet.next()) { state.addBatch("DROP TABLE Cercle "); }
+       *
+       */
       // Carre
       state.addBatch("CREATE TABLE Carre (" + "nom VARCHAR(255) NOT NULL , " + "x int NOT NULL , "
           + "y int NOT NULL , " + "side int NOT NULL, " + "PRIMARY KEY (nom))");
@@ -97,11 +89,12 @@ public class DbConn {
       state.addBatch(
           "CREATE TABLE Forme(nomForme VARCHAR(255) NOT NULL , typeForme VARCHAR(255) NOT NULL ,"
               + "PRIMARY KEY (NomForme))");
-      // Personnel rattaché à un groupe.
+      // Personnel rattachï¿½ ï¿½ un groupe.
       state.addBatch("CREATE TABLE  FaitPartie( nomGroupe varchar(255) NOT NULL ,"
           + "nomForme VARCHAR(255) NOT NULL , " + "typeForme VARCHAR(255) NOT NULL , "
           + "PRIMARY KEY (nomGroupe,nomForme), "
-          + " CONSTRAINT fk_groupe FOREIGN KEY (nomGroupe) REFERENCES Groupe(NomGroupe) ON DELETE CASCADE )");
+          + " CONSTRAINT fk_groupe FOREIGN KEY (nomGroupe) REFERENCES Groupe(NomGroupe) "
+          + "ON DELETE CASCADE )");
 
       state.executeBatch();
       state.close();
@@ -115,7 +108,12 @@ public class DbConn {
 
           e.printStackTrace();
         }
-        state.close();
+        if (state != null) {
+          state.close();
+        }
+        /*
+         * if (resultSet != null) { resultSet.close();
+         */
 
       }
     }

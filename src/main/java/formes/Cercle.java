@@ -1,7 +1,7 @@
 package formes;
 
 /**
- * Réprésentation de la forme cercle.
+ * Rï¿½prï¿½sentation de la forme cercle.
  *
  * @author Mass'
  *
@@ -11,6 +11,13 @@ public class Cercle extends Forme {
   private int rayon;
   private Position2D position;
 
+  /**
+   * Constructeur de Cercle.
+   *
+   * @param name du cercle
+   * @param position 2D
+   * @param rayon longueur.
+   */
   public Cercle(String name, Position2D position, int rayon) {
     super(name);
     this.position = position;
@@ -28,7 +35,7 @@ public class Cercle extends Forme {
 
 
   /**
-   * Déplacer l'objet selon les coordonnées mis en paramètres.
+   * Dï¿½placer l'objet selon les coordonnï¿½es mis en paramï¿½tres.
    */
   @Override
   public void move(int x, int y) {

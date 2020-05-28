@@ -4,7 +4,7 @@ import java.sql.SQLException;
 import persistance.DbConn;
 
 /**
- * Classe principale qui contient la méthode run qui lance l'application.
+ * Classe principale qui contient la mï¿½thode run qui lance l'application.
  *
  * @see DrawingTui#DrawingTui()
  *
@@ -15,18 +15,18 @@ public enum DrawingApp {
   APP;
 
 
-
+  /**
+   * Lance la base de donnÃ©es et appelle l'interface utilisateur.
+   */
   public void run() throws NonExistentFormeException, SQLException {
-    /**
-     * Lance la base de données
-     */
+
     new DbConn().createTables();
     System.out.println("Bienvenue sur le logiciel de dessin :) ");
     DrawingTui userInterface = new DrawingTui();
     while (userInterface.nextCommand()) {
 
     }
-    System.out.println("Au revoir, à la prochaine ;) ");
+    System.out.println("Au revoir, ï¿½ la prochaine ;) ");
 
   }
 

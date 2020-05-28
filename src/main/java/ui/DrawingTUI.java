@@ -1,7 +1,5 @@
 package ui;
 
-import java.util.ArrayList;
-import java.util.Scanner;
 import commands.AddForme;
 import commands.Create;
 import commands.CreateComposite;
@@ -9,10 +7,12 @@ import commands.Delete;
 import commands.Move;
 import commands.Print;
 import formes.Forme;
+import java.util.ArrayList;
+import java.util.Scanner;
 import persistance.DaoFactory;
 
 /**
- * Classe qui intéragit avec l'utilisateur et appelle les commandes.
+ * Classe qui intÃ©ragit avec l'utilisateur et appelle les commandes.
  *
  *
  * @author Mass'
@@ -22,18 +22,21 @@ public class DrawingTui {
 
   private Scanner sc;
 
+  /**
+   * Lancement de l'interaction avec l'utilisateur.
+   */
   public DrawingTui() {
-    sc = new Scanner(System.in);
+    sc = new Scanner(System.in, "UTF-8");
     System.out.println("Choisissez ce que vous voulez faire :");
     System.out.println("Pour ajouter une forme");
     System.out.println("-> name = typeForme((x, y), param1, param2...)");
-    System.out.println("Pour créer un groupe de formes");
+    System.out.println("Pour crÃ©er un groupe de formes");
     System.out
-        .println("On ne peut créer un groupe qu'avec des formes déjà existantes, ou sans formes");
+        .println("On ne peut crÃ©er un groupe qu'avec des formes dÃ©jÃ  existantes, ou sans formes");
     System.out.println("-> NomGroupe = NomForme1 + NomForme2  ");
-    System.out.println("Pour ajouter un élément à un groupe ");
+    System.out.println("Pour ajouter un Ã©lÃ©ment Ã  un groupe ");
     System.out.println("-> Ajout NomGroupe + NomForme ");
-    System.out.println("Pour déplacer une forme ou un groupe de formes");
+    System.out.println("Pour dÃ©placer une forme ou un groupe de formes");
     System.out.println("-> Move(Nom, (x, y))");
     System.out.println("Pour afficher des informations sur une forme ou un groupe");
     System.out.println("-> Print Nom");
@@ -43,7 +46,12 @@ public class DrawingTui {
     System.out.println("-> quit");
   }
 
-
+  /**
+   * RÃ©cupÃ¨re la commande entrÃ©e par l'utilisateur.
+   *
+   * @return vrai si l'utilisateur ne quitte pas.
+   * @throws NonExistentFormeException si une forme demandÃ©e n'existe pas.
+   */
   public boolean nextCommand() throws NonExistentFormeException {
     String line = "";
     if (sc.hasNextLine()) {
@@ -67,8 +75,9 @@ public class DrawingTui {
       add(line);
     } else if (line.contains("Delete")) {
       delete(line);
-    } else
+    } else {
       System.out.println("Commande inconnue, respectez la syntaxe");
+    }
 
     return true;
 
@@ -76,50 +85,52 @@ public class DrawingTui {
 
 
   /**
+   * Appelle la commande de crÃ©ation.
+   *
    * @see commands.Create#execute()
-   * 
-   * @param line tapée par l'utilisateur.
+   *
+   * @param line tapï¿½e par l'utilisateur.
    */
   private void create(String line) {
     String[] lineContent = line.split("=");
     String name = lineContent[0].trim();
 
-    String[] infos = lineContent[1].split("((");
+    String[] infos = lineContent[1].split("\\(\\(");
     String forme = infos[0].trim();
 
     String[] tab = infos[1].split(",");
 
     int x = Integer.parseInt(tab[0].trim());
-    int y = Integer.parseInt(tab[1].split(")")[0].trim());
+    int y = Integer.parseInt(tab[1].split("\\)")[0].trim());
 
     ArrayList<Integer> parameters = new ArrayList<Integer>();
 
-    // Retirer la dernière parenthèse
-    tab[tab.length - 1] = tab[tab.length - 1].split(")")[0].trim();
+    // Retirer la derniÃ©re parenthÃ¨se
+    tab[tab.length - 1] = tab[tab.length - 1].split("\\)")[0].trim();
 
     for (int i = 2; i < tab.length; i++) {
       parameters.add(Integer.parseInt(tab[i].trim()));
     }
 
-
     Create create = new Create(forme.toLowerCase(), name, x, y, parameters);
-
     create.execute();
 
 
   }
 
   /**
+   * Invoque la commande de crÃ©ation de groupes.
+   *
    * @see commands.CreateComposite#execute()
    *
-   * @param line tapée par l'utilisateur.
+   * @param line tapÃ©e par l'utilisateur.
    */
   private void createComposite(String line) throws NonExistentFormeException {
 
     String[] lineContent = line.split("=");
 
     String name = lineContent[0].trim();
-    String[] parameters = lineContent[1].split("+");
+    String[] parameters = lineContent[1].split("\\+");
 
     ArrayList<String> liste = new ArrayList<>();
     for (int i = 0; i < parameters.length; i++) {
@@ -131,66 +142,78 @@ public class DrawingTui {
   }
 
   /**
+   * Invoque la commande d'ajout de forme Ã  un groupe.
+   *
    * @see commands.AddForme#execute()
    *
-   * @param line tapée par l'utilisateur.
+   * @param line tapÃ©e par l'utilisateur.
+   * @throws NonExistentFormeException si le fichier n'existe pas.
    */
-  private void add(String line) {
+  private void add(String line) throws NonExistentFormeException {
     String[] lineContent = line.split("Ajout");
-    String nomGroupe = lineContent[1].split("+")[0].trim();
-    String nomForme = lineContent[1].split("+")[1].trim();
+    String nomGroupe = lineContent[1].split("\\+")[0].trim();
+    String nomForme = lineContent[1].split("\\+")[1].trim();
 
-    new AddForme(nomGroupe, nomForme);
+    new AddForme(nomGroupe, nomForme).execute();
 
   }
 
   /**
+   * Appelle la commande de dÃ©placement.
+   *
    * @see commands.Move#execute()
    *
-   * @param line tapée par l'utilisateur.
+   * @param line tapÃ©e par l'utilisateur.
    */
   private void move(String line) throws NonExistentFormeException {
-    String[] lineContent = line.split("(");
+    String[] lineContent = line.split("\\(");
     String name = lineContent[1].trim().split(",", 2)[0].trim();
 
-    String position = lineContent[2].split(")")[0];
+    String position = lineContent[2].split("\\)")[0];
 
     int x = Integer.parseInt(position.split(",")[0].trim());
     int y = Integer.parseInt(position.split(",")[1].trim());
 
-    // Récupérer le type de forme
+    // RÃ©cupÃ¨rer le type de forme
     String typeForme = DaoFactory.getFormeDao().read(name).getClass().getSimpleName();
 
     new Move(name, typeForme, x, y).execute();
 
+
   }
 
   /**
+   * Appelle la commande d'affichage.
+   *
    * @see commands.Print#execute()
    *
-   * @param line tapée par l'utilisateur.
+   * @param line tapÃ©e par l'utilisateur.
    */
   private void print(String line) throws NonExistentFormeException {
 
     String name = line.split("Print")[1].trim();
 
     Forme forme = DaoFactory.getFormeDao().read(name);
-
-    new Print(forme);
+    new Print(forme).execute();
 
   }
 
   /**
+   * Appelle la fonction de suppression.
+   *
    * @see commands.Delete#execute()
    *
-   * @param line tapée par l'utilisateur.
+   * @param line tapÃ©e par l'utilisateur.
    */
   private void delete(String line) throws NonExistentFormeException {
     String name = line.split("Delete")[1].trim();
 
     Forme forme = DaoFactory.getFormeDao().read(name);
-
-    new Delete(forme);
+    if (forme != null) {
+      new Delete(forme).execute();
+    } else {
+      System.out.println("La forme demandÃ©e n'existe pas");
+    }
 
   }
 

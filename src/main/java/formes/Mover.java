@@ -1,7 +1,7 @@
 package formes;
 
 /**
- * L'interface component pour le déplacement.
+ * L'interface component pour le dÃ©placement.
  *
  * @author Mass'
  *

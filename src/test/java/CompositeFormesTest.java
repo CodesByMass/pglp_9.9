@@ -1,11 +1,11 @@
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import org.junit.Before;
-import org.junit.Test;
 import formes.Carre;
 import formes.CompositeFormes;
 import formes.Forme;
 import formes.Position2D;
+import org.junit.Before;
+import org.junit.Test;
 
 public class CompositeFormesTest {
   CompositeFormes cf = null;

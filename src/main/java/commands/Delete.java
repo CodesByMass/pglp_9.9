@@ -24,7 +24,7 @@ public class Delete implements Commande {
   }
 
   /**
-   * Récupère le type de la forme puis supprime de la base de données.
+   * RÃ©cupÃ¨re le type de la forme puis supprime de la base de donnÃ©es.
    */
   @Override
   public void execute() throws NonExistentFormeException {

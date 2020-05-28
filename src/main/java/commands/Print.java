@@ -4,8 +4,7 @@ import formes.Forme;
 import ui.NonExistentFormeException;
 
 /**
- *
- * Affiche les informations d'une forme ou d'un groupe,
+ * Affiche les informations d'une forme ou d'un groupe.
  *
  * @author Mass'
  *

@@ -21,7 +21,7 @@
 			<scope>test</scope>
 		</dependency>
 
-
+	
 		<dependency>
 			<groupId>com.github.spotbugs</groupId>
 			<artifactId>spotbugs</artifactId>

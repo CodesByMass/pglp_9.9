@@ -1,16 +1,16 @@
 package persistance;
 
+import formes.Position2D;
+import formes.Rectangle;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import formes.Position2D;
-import formes.Rectangle;
 import ui.NonExistentFormeException;
 
 /**
- * Implémentation de DAO avec Derby pour la classe Rectangle.
+ * Implï¿½mentation de DAO avec Derby pour la classe Rectangle.
  *
  * @see Rectangle
  *
@@ -20,7 +20,7 @@ import ui.NonExistentFormeException;
 public class DaoRectangle extends Dao<Rectangle> {
 
   /**
-   * Chaine de caractere de la base de données.
+   * Chaine de caractere de la base de donnï¿½es.
    */
   private static String dburl = DbConn.dburl;
 
@@ -36,7 +36,7 @@ public class DaoRectangle extends Dao<Rectangle> {
       prepare.setInt(5, t.getLargeur());
       int result = prepare.executeUpdate();
       if (result == 1) {
-        System.out.println("L'ajout du rectangle s'est bien déroulé");
+        System.out.println("L'ajout du rectangle s'est bien dÃ©roulÃ©");
         DaoFactory.getFormeDao().create(t);
       }
       prepare.close();
@@ -48,37 +48,77 @@ public class DaoRectangle extends Dao<Rectangle> {
 
   @Override
   public void update(Rectangle t) throws NonExistentFormeException {
-    try (Connection conn = DriverManager.getConnection(dburl)) {
-      PreparedStatement prepare =
-          conn.prepareStatement("UPDATE Rectangle SET x = '?',y = '?' WHERE nom = '?'");
+    PreparedStatement prepare = null;
+    Connection conn = null;
+    try {
+      conn = DriverManager.getConnection(dburl);
+      prepare = conn.prepareStatement("UPDATE Rectangle SET x = ?,y = ? WHERE nom = ?");
       prepare.setInt(1, t.getPosition().getX());
       prepare.setInt(2, t.getPosition().getY());
       prepare.setString(3, t.getName());
       int result = prepare.executeUpdate();
       if (result != 1) {
-        throw new NonExistentFormeException();
+        System.out.println("Le rectangle n'existe pas");
       } else {
-        System.out.println(" Le rectangle a bien été modifié");
+        System.out.println(" Le rectangle a bien Ã©tÃ© modifiÃ©");
       }
     } catch (SQLException e) {
       e.printStackTrace();
+    } finally {
+      if (prepare != null) {
+        try {
+          prepare.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+
+      if (conn != null) {
+        try {
+          conn.close();
+        } catch (SQLException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
     }
 
   }
 
   @Override
   public void delete(Rectangle t) throws NonExistentFormeException {
-    try (Connection conn = DriverManager.getConnection(dburl)) {
-      PreparedStatement prepare = conn.prepareStatement("DELETE FROM Rectangle WHERE nom = '?'");
+    PreparedStatement prepare = null;
+    Connection conn = null;
+    try {
+      conn = DriverManager.getConnection(dburl);
+      prepare = conn.prepareStatement("DELETE FROM Rectangle WHERE nom = ?");
       prepare.setString(1, t.getName());
       int result = prepare.executeUpdate();
       if (result == 1) {
-        System.out.println("Le rectangle été supprimé");
+        System.out.println("Le rectangle a Ã©tÃ© supprimï¿½");
+        DaoFactory.getFormeDao().delete(t);
       } else {
-        throw new NonExistentFormeException();
+        System.out.println("Le rectangle n'existe pas");
       }
     } catch (SQLException e) {
       e.printStackTrace();
+    } finally {
+      if (prepare != null) {
+        try {
+          prepare.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+
+      if (conn != null) {
+        try {
+          conn.close();
+        } catch (SQLException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
     }
 
   }
@@ -86,15 +126,19 @@ public class DaoRectangle extends Dao<Rectangle> {
   @Override
   public Rectangle read(String nom) throws NonExistentFormeException {
     Rectangle r = null;
-    try (Connection conn = DriverManager.getConnection(dburl)) {
-      PreparedStatement prepare = conn.prepareStatement("SELECT * FROM Rectangle WHERE nom = '?'");
+    PreparedStatement prepare = null;
+    Connection conn = null;
+    ResultSet result = null;
+    try {
+      conn = DriverManager.getConnection(dburl);
+      prepare = conn.prepareStatement("SELECT * FROM Rectangle WHERE nom = ?");
       prepare.setString(1, nom);
-      ResultSet result = prepare.executeQuery();
+      result = prepare.executeQuery();
 
       if (!result.next()) {
-        throw new NonExistentFormeException();
+        System.out.println("Le rectangle n'existe pas");
       } else {
-        // Crée un rectangle.
+        // Crï¿½e un rectangle.
         r = new Rectangle(result.getString("nom"),
             new Position2D(result.getInt("x"), result.getInt("y")), result.getInt("longueur"),
             result.getInt("largeur"));
@@ -102,6 +146,31 @@ public class DaoRectangle extends Dao<Rectangle> {
       }
     } catch (SQLException e) {
       e.printStackTrace();
+    } finally {
+      if (prepare != null) {
+        try {
+          prepare.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+
+      if (conn != null) {
+        try {
+          conn.close();
+        } catch (SQLException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
+      if (result != null) {
+        try {
+          result.close();
+        } catch (SQLException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
     }
 
     return r;

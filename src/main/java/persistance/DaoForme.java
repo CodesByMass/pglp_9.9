@@ -1,17 +1,17 @@
 package persistance;
 
+import formes.Forme;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import formes.Forme;
 import ui.NonExistentFormeException;
 
 public class DaoForme extends Dao<Forme> {
 
   /**
-   * Chaine de caractere de la base de données.
+   * Chaine de caractere de la base de donnï¿½es.
    */
   private static String dburl = DbConn.dburl;
 
@@ -20,10 +20,10 @@ public class DaoForme extends Dao<Forme> {
     try (Connection conn = DriverManager.getConnection(dburl)) {
       PreparedStatement prepare = conn.prepareStatement("INSERT INTO Forme VALUES " + "( ?, ?)");
       prepare.setString(1, t.getName());
-      prepare.setString(2, t.getClass().getSimpleName());
+      prepare.setString(2, t.getClass().getSimpleName().toLowerCase());
       int result = prepare.executeUpdate();
       if (result == 1) {
-        System.out.println("L'ajout de la forme s'est bien déroulé");
+        System.out.println("L'ajout de la forme s'est bien dï¿½roulï¿½");
       }
       prepare.close();
     } catch (SQLException e) {
@@ -34,33 +34,58 @@ public class DaoForme extends Dao<Forme> {
 
   @Override
   public void update(Forme t) {
-    System.out.println("Il n y a rien à modifier !");
+    System.out.println("Il n y a rien Ã  modifier !");
 
   }
 
   @Override
   public void delete(Forme t) throws NonExistentFormeException {
-    try (Connection conn = DriverManager.getConnection(dburl)) {
-      PreparedStatement prepare = conn.prepareStatement("DELETE FROM Forme WHERE nom = '?'");
+    PreparedStatement prepare = null;
+    Connection conn = null;
+    try {
+      conn = DriverManager.getConnection(dburl);
+      prepare = conn.prepareStatement("DELETE FROM Forme WHERE nom = ?");
       prepare.setString(1, t.getName());
       int result = prepare.executeUpdate();
       if (result == 1) {
-        System.out.println("La forme a été supprimé");
+        System.out.println("La forme a Ã©tÃ© supprimÃ©");
       } else {
-        throw new NonExistentFormeException();
+        System.out.println("La forme n'existe pas");
       }
     } catch (SQLException e) {
       e.printStackTrace();
+    } finally {
+      if (prepare != null) {
+        try {
+          prepare.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+
+      if (conn != null) {
+        try {
+          conn.close();
+        } catch (SQLException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
     }
 
   }
 
   @Override
   public Forme read(String nom) throws NonExistentFormeException {
-    try (Connection conn = DriverManager.getConnection(dburl)) {
-      PreparedStatement prepare = conn.prepareStatement("SELECT FROM Forme WHERE nom = '?' ");
+    PreparedStatement prepare = null;
+    Connection conn = null;
+    ResultSet result = null;
+    System.out.println("Le nom est " + nom);
+    try {
+      conn = DriverManager.getConnection(dburl);
+      prepare = conn.prepareStatement("SELECT * FROM Forme WHERE nomForme = ? ");
       prepare.setString(1, nom);
-      ResultSet result = prepare.executeQuery();
+      result = prepare.executeQuery();
       if (result.next()) {
         switch (result.getString("typeForme")) {
           case "cercle":
@@ -73,13 +98,41 @@ public class DaoForme extends Dao<Forme> {
             return new DaoTriangle().read(nom);
           case "composite":
             return new DaoComposite().read(nom);
+          default:
+            System.out.println("Forme inconnue");
         }
       } else {
-        throw new NonExistentFormeException();
+        System.out.println("Cette forme n'existe pas");
       }
       prepare.close();
     } catch (SQLException e) {
       e.printStackTrace();
+    } finally {
+      if (prepare != null) {
+        try {
+          prepare.close();
+        } catch (SQLException e) {
+          e.printStackTrace();
+        }
+      }
+
+      if (conn != null) {
+        try {
+          conn.close();
+        } catch (SQLException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
+
+      if (result != null) {
+        try {
+          result.close();
+        } catch (SQLException e) {
+          // TODO Auto-generated catch block
+          e.printStackTrace();
+        }
+      }
     }
     return null;
   }

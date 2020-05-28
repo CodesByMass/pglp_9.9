@@ -7,6 +7,15 @@ public class Triangle extends Forme {
   int side2;
   int side3;
 
+  /**
+   * Constructeur de Triangle.
+   *
+   * @param name de la forme
+   * @param position x et y.
+   * @param side1 taille cotÃ© 1.
+   * @param side2 taille cotÃ© 2.
+   * @param side3 taille cotÃ© 3.
+   */
   public Triangle(String name, Position2D position, int side1, int side2, int side3) {
     super(name);
     this.position = position;
@@ -38,7 +47,7 @@ public class Triangle extends Forme {
 
 
   /**
-   * Déplacer l'objet selon les coordonnées mis en paramètres.
+   * Dï¿½placer l'objet selon les coordonnï¿½es mis en paramï¿½tres.
    */
   @Override
   public void move(int x, int y) {
@@ -49,7 +58,7 @@ public class Triangle extends Forme {
   @Override
   public void print() {
     System.out.println("Triangle " + "(" + this.getName() + "=" + this.getPosition().toString()
-        + ",coté 1 = " + this.getSide1() + ",coté 3 = " + this.getSide2() + ",coté 3 = "
+        + ",cotï¿½ 1 = " + this.getSide1() + ",cotï¿½ 3 = " + this.getSide2() + ",cotï¿½ 3 = "
         + this.getSide3() + ")");
 
   }

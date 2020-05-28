@@ -1,20 +1,19 @@
 package commands;
 
-import java.util.ArrayList;
 import formes.Carre;
 import formes.Cercle;
 import formes.Position2D;
 import formes.Rectangle;
 import formes.Triangle;
+import java.util.ArrayList;
 import persistance.DaoCarre;
 import persistance.DaoCercle;
 import persistance.DaoRectangle;
 import persistance.DaoTriangle;
-import ui.FalseTypeException;
 
 /**
- * Cr�e une forme, invoqu�e par DrawingTui.
- * 
+ * Cr�e une forme, invoqu�e par DrawingTui.
+ *
  * @see ui.DrawingTui#create(String)
  *
  * @author Mass'
@@ -28,6 +27,15 @@ public class Create implements Commande {
   int y;
   ArrayList<Integer> params;
 
+  /**
+   * Constructeur.
+   *
+   * @param type de la forme
+   * @param name de la forme
+   * @param x coordonnée
+   * @param y coordonnée
+   * @param params spécifiques à chaque forme
+   */
   public Create(String type, String name, int x, int y, ArrayList<Integer> params) {
     this.type = type;
     this.name = name;
@@ -59,7 +67,7 @@ public class Create implements Commande {
           new DaoTriangle().create(triangle);
           break;
         default:
-          throw new FalseTypeException();
+          System.out.println("Cette forme est incorrecte");
 
       }
     } catch (Exception e) {
