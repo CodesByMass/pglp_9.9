@@ -1,5 +1,11 @@
 package ui;
 
+/**
+ * Déclenchée quand la forme demandée n'existe pas dans la base de données.
+ *
+ * @author Mass'
+ *
+ */
 public class NonExistentFormeException extends Exception {
 
 

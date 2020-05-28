@@ -6,9 +6,20 @@ import formes.Forme;
 import persistance.DaoFactory;
 import ui.NonExistentFormeException;
 
+/**
+ * Crée un groupe avec les formes déjà existantes.
+ *
+ * @see ui.DrawingTui#createComposite(String)
+ *
+ * @author Mass'
+ *
+ */
 public class CreateComposite implements Commande {
 
   private String name;
+  /**
+   * Liste des formes.
+   */
   private ArrayList<String> liste;
 
   public CreateComposite(String name, ArrayList<String> liste) {

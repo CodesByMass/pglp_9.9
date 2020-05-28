@@ -11,11 +11,18 @@ import commands.Print;
 import formes.Forme;
 import persistance.DaoFactory;
 
-public class DrawingTUI {
+/**
+ * Classe qui intéragit avec l'utilisateur et appelle les commandes.
+ *
+ *
+ * @author Mass'
+ *
+ */
+public class DrawingTui {
 
   private Scanner sc;
 
-  public DrawingTUI() {
+  public DrawingTui() {
     sc = new Scanner(System.in);
     System.out.println("Choisissez ce que vous voulez faire :");
     System.out.println("Pour ajouter une forme");
@@ -68,8 +75,12 @@ public class DrawingTUI {
   }
 
 
-
-  public void create(String line) {
+  /**
+   * @see commands.Create#execute()
+   * 
+   * @param line tapée par l'utilisateur.
+   */
+  private void create(String line) {
     String[] lineContent = line.split("=");
     String name = lineContent[0].trim();
 
@@ -98,7 +109,12 @@ public class DrawingTUI {
 
   }
 
-  public void createComposite(String line) throws NonExistentFormeException {
+  /**
+   * @see commands.CreateComposite#execute()
+   *
+   * @param line tapée par l'utilisateur.
+   */
+  private void createComposite(String line) throws NonExistentFormeException {
 
     String[] lineContent = line.split("=");
 
@@ -114,6 +130,11 @@ public class DrawingTUI {
 
   }
 
+  /**
+   * @see commands.AddForme#execute()
+   *
+   * @param line tapée par l'utilisateur.
+   */
   private void add(String line) {
     String[] lineContent = line.split("Ajout");
     String nomGroupe = lineContent[1].split("+")[0].trim();
@@ -123,7 +144,12 @@ public class DrawingTUI {
 
   }
 
-  public void move(String line) throws NonExistentFormeException {
+  /**
+   * @see commands.Move#execute()
+   *
+   * @param line tapée par l'utilisateur.
+   */
+  private void move(String line) throws NonExistentFormeException {
     String[] lineContent = line.split("(");
     String name = lineContent[1].trim().split(",", 2)[0].trim();
 
@@ -139,7 +165,12 @@ public class DrawingTUI {
 
   }
 
-  public void print(String line) throws NonExistentFormeException {
+  /**
+   * @see commands.Print#execute()
+   *
+   * @param line tapée par l'utilisateur.
+   */
+  private void print(String line) throws NonExistentFormeException {
 
     String name = line.split("Print")[1].trim();
 
@@ -149,6 +180,11 @@ public class DrawingTUI {
 
   }
 
+  /**
+   * @see commands.Delete#execute()
+   *
+   * @param line tapée par l'utilisateur.
+   */
   private void delete(String line) throws NonExistentFormeException {
     String name = line.split("Delete")[1].trim();
 

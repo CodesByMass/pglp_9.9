@@ -12,6 +12,14 @@ import persistance.DaoRectangle;
 import persistance.DaoTriangle;
 import ui.FalseTypeException;
 
+/**
+ * Crée une forme, invoquée par DrawingTui.
+ * 
+ * @see ui.DrawingTui#create(String)
+ *
+ * @author Mass'
+ *
+ */
 public class Create implements Commande {
 
   String type;

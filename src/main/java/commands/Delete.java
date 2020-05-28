@@ -9,6 +9,12 @@ import formes.Triangle;
 import persistance.DaoFactory;
 import ui.NonExistentFormeException;
 
+/**
+ * Supprime une forme ou un groupe.
+ *
+ * @author Mass'
+ *
+ */
 public class Delete implements Commande {
 
   private Forme forme;
@@ -17,6 +23,9 @@ public class Delete implements Commande {
     this.forme = forme;
   }
 
+  /**
+   * Récupère le type de la forme puis supprime de la base de données.
+   */
   @Override
   public void execute() throws NonExistentFormeException {
 

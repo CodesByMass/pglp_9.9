@@ -1,5 +1,12 @@
 package ui;
 
+/**
+ * Déclenchée quand le type de la forme n'est pas reconnue par le programme. Par exemple quand
+ * l'utilisateur crée une forme.
+ *
+ * @author Mass'
+ *
+ */
 public class FalseTypeException extends Exception {
 
   /**

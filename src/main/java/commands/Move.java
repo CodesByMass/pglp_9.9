@@ -9,6 +9,12 @@ import persistance.Dao;
 import persistance.DaoFactory;
 import ui.NonExistentFormeException;
 
+/**
+ * Commande de déplacement des formes.
+ *
+ * @author Mass'
+ *
+ */
 public class Move implements Commande {
 
   private String name;
@@ -24,6 +30,9 @@ public class Move implements Commande {
     this.y = y;
   }
 
+  /**
+   * Récupère le type de forme ou le groupes à déplacer.
+   */
   @Override
   public void execute() throws NonExistentFormeException {
     switch (type) {
