@@ -16,12 +16,12 @@ public class FormeTest {
 
   @Test
   public void testGetX() {
-    assertTrue(f.getPosition().getX() == 1);
+    assertTrue(((Carre) f).getPosition().getX() == 1);
   }
 
   @Test
   public void testGetY() {
-    assertTrue(f.getPosition().getY() == 1);
+    assertTrue(((Carre) f).getPosition().getY() == 1);
   }
 
   @Test
@@ -32,7 +32,7 @@ public class FormeTest {
   @Test
   public void testMove() {
     f.move(2, 2);
-    assertTrue(f.getPosition().equals(new Position2D(3, 3)));
+    assertTrue(((Carre) f).getPosition().equals(new Position2D(3, 3)));
   }
 
 }

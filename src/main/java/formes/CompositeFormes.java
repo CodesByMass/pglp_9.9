@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @author Mass'
  *
  */
-public class CompositeFormes implements Mover, Printer {
+public class CompositeFormes extends Forme implements Mover, Printer {
   /**
    * Nom du groupe.
    */
@@ -25,15 +25,16 @@ public class CompositeFormes implements Mover, Printer {
    * @param name du groupe.
    */
   public CompositeFormes(String name) {
-    this.name = name;
+    super(name);
     this.childsFormes.clear();
   }
 
   public CompositeFormes(String name, ArrayList<Forme> childsFormes) {
-    this.name = name;
+    super(name);
     this.childsFormes = childsFormes;
   }
 
+  @Override
   public String getName() {
     return name;
   }

@@ -1,37 +1,40 @@
 package persistance;
 
+import ui.NonExistentFormeException;
+
 public abstract class Dao<T> {
 
   /**
    * Ajoute une forme à la base de données.
    *
    * @param t l'objet à ajouter
-   * @throws Exception si une erreur SQL se produit.
+   * @throws NonExistentFormeException
+   * @throws NonExistentFormeException si la forme n'existe pas ou n'est pas dans le groupe.
    */
-  abstract void create(T t) throws Exception;
+  public abstract void create(T t) throws NonExistentFormeException;
 
   /**
    * Modifie une forme dans la base de données.
-   * 
+   *
    * @param t la forme à modifier
-   * @throws Exception si une erreur SQL se produit.
+   * @throws NonExistentFormeException si la forme n'existe pas ou n'est pas dans le groupe.
    */
-  abstract void update(T t) throws Exception;
+  public abstract void update(T t) throws NonExistentFormeException;
 
   /**
    * Supprime une forme dans la base de données.
-   * 
+   *
    * @param t la forme à supprimer.
-   * @throws Exception si une erreur SQL se produit.
+   * @throws NonExistentFormeException si la forme n'existe pas ou n'est pas dans le groupe.
    */
-  abstract void delete(T t) throws Exception;
+  public abstract void delete(T t) throws NonExistentFormeException;
 
   /**
    * Récupère une forme de la base données.
-   * 
+   *
    * @param nom de la forme à récupérer.
    * @return la forme demandée
-   * @throws Exception si la forme n'existe pas ou n'est pas dans le groupe.
+   * @throws NonExistentFormeException si la forme n'existe pas ou n'est pas dans le groupe.
    */
-  abstract T read(String nom) throws Exception;
+  public abstract T read(String nom) throws NonExistentFormeException;
 }

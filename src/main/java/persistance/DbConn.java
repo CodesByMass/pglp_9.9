@@ -93,9 +93,10 @@ public class DbConn {
       // Groupe
       state.addBatch("CREATE TABLE Groupe(nomGroupe " + "VARCHAR(255) NOT NULL , "
           + "PRIMARY KEY (NomGroupe))");
-      // Groupe
+      // Forme
       state.addBatch(
-          "CREATE TABLE Forme(NomForme " + "VARCHAR(255) NOT NULL , " + "PRIMARY KEY (NomForme))");
+          "CREATE TABLE Forme(nomForme VARCHAR(255) NOT NULL , typeForme VARCHAR(255) NOT NULL ,"
+              + "PRIMARY KEY (NomForme))");
       // Personnel rattaché à un groupe.
       state.addBatch("CREATE TABLE  FaitPartie( nomGroupe varchar(255) NOT NULL ,"
           + "nomForme VARCHAR(255) NOT NULL , " + "typeForme VARCHAR(255) NOT NULL , "

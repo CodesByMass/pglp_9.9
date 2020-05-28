@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import formes.Position2D;
 import formes.Triangle;
+import ui.NonExistentFormeException;
 
 /**
  * Implémentation de DAO avec Derby pour la classe Triangle.
@@ -24,7 +25,7 @@ public class DaoTriangle extends Dao<Triangle> {
   private static String dburl = DbConn.dburl;
 
   @Override
-  void create(Triangle t) throws Exception {
+  public void create(Triangle t) throws NonExistentFormeException {
     try (Connection conn = DriverManager.getConnection(dburl)) {
       PreparedStatement prepare =
           conn.prepareStatement("INSERT INTO Triangle VALUES " + "( ?, ? , ? , ?, ?, ? )");
@@ -37,6 +38,7 @@ public class DaoTriangle extends Dao<Triangle> {
       int result = prepare.executeUpdate();
       if (result == 1) {
         System.out.println("L'ajout du triangle s'est bien déroulé");
+        DaoFactory.getFormeDao().create(t);
       }
       prepare.close();
     } catch (SQLException e) {
@@ -46,16 +48,16 @@ public class DaoTriangle extends Dao<Triangle> {
   }
 
   @Override
-  void update(Triangle t) throws Exception {
+  public void update(Triangle t) throws NonExistentFormeException {
     try (Connection conn = DriverManager.getConnection(dburl)) {
       PreparedStatement prepare =
-          conn.prepareStatement("UPDATE Triangle SET x = ?,y = ? WHERE nom = ?");
+          conn.prepareStatement("UPDATE Triangle SET x = '?',y = '?' WHERE nom = '?'");
       prepare.setInt(1, t.getPosition().getX());
       prepare.setInt(2, t.getPosition().getY());
       prepare.setString(3, t.getName());
       int result = prepare.executeUpdate();
       if (result != 1) {
-        System.out.println("Ce triangle n'existe pas");
+        throw new NonExistentFormeException();
       } else {
         System.out.println(" Le triangle a bien été modifié");
       }
@@ -66,15 +68,15 @@ public class DaoTriangle extends Dao<Triangle> {
   }
 
   @Override
-  void delete(Triangle t) throws Exception {
+  public void delete(Triangle t) throws NonExistentFormeException {
     try (Connection conn = DriverManager.getConnection(dburl)) {
-      PreparedStatement prepare = conn.prepareStatement("DELETE FROM Triangle WHERE nom = ?");
+      PreparedStatement prepare = conn.prepareStatement("DELETE FROM Triangle WHERE nom = '?'");
       prepare.setString(1, t.getName());
       int result = prepare.executeUpdate();
       if (result == 1) {
         System.out.println("Le triangle été supprimé");
       } else {
-        System.out.println("Un problème est survenu lors de la suppression");
+        throw new NonExistentFormeException();
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -83,15 +85,15 @@ public class DaoTriangle extends Dao<Triangle> {
   }
 
   @Override
-  Triangle read(String nom) throws Exception {
+  public Triangle read(String nom) throws NonExistentFormeException {
     Triangle t = null;
     try (Connection conn = DriverManager.getConnection(dburl)) {
-      PreparedStatement prepare = conn.prepareStatement("SELECT * FROM Triangle WHERE nom = ?");
+      PreparedStatement prepare = conn.prepareStatement("SELECT * FROM Triangle WHERE nom = '?'");
       prepare.setString(1, nom);
       ResultSet result = prepare.executeQuery();
 
       if (!result.next()) {
-        System.out.println("Le triangle recherché n'existe pas");
+        throw new NonExistentFormeException();
       } else {
         // Crée un triangle.
         t = new Triangle(result.getString("nom"),

@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import formes.Cercle;
 import formes.Position2D;
+import ui.NonExistentFormeException;
 
 /**
  * Implémentation de DAO avec Derby pour la classe Cercle.
@@ -24,7 +25,7 @@ public class DaoCercle extends Dao<Cercle> {
   private static String dburl = DbConn.dburl;
 
   @Override
-  void create(Cercle t) throws Exception {
+  public void create(Cercle t) throws NonExistentFormeException {
     try (Connection conn = DriverManager.getConnection(dburl)) {
       PreparedStatement prepare =
           conn.prepareStatement("INSERT INTO Cercle VALUES " + "( ?, ? , ? , ? )");
@@ -35,6 +36,7 @@ public class DaoCercle extends Dao<Cercle> {
       int result = prepare.executeUpdate();
       if (result == 1) {
         System.out.println("L'ajout du cercle s'est bien déroulé");
+        DaoFactory.getFormeDao().create(t);
       }
       prepare.close();
     } catch (SQLException e) {
@@ -43,16 +45,16 @@ public class DaoCercle extends Dao<Cercle> {
   }
 
   @Override
-  void update(Cercle t) throws Exception {
+  public void update(Cercle t) throws NonExistentFormeException {
     try (Connection conn = DriverManager.getConnection(dburl)) {
       PreparedStatement prepare =
-          conn.prepareStatement("UPDATE Cercle SET x = ?,y = ? WHERE nom = ?");
+          conn.prepareStatement("UPDATE Cercle SET x = '?',y = '?' WHERE nom = '?'");
       prepare.setInt(1, t.getPosition().getX());
       prepare.setInt(2, t.getPosition().getY());
       prepare.setString(3, t.getName());
       int result = prepare.executeUpdate();
       if (result != 1) {
-        System.out.println("Ce cercle n'existe pas");
+        throw new NonExistentFormeException();
       } else {
         System.out.println(" Le cercle a bien été modifié");
       }
@@ -63,15 +65,15 @@ public class DaoCercle extends Dao<Cercle> {
   }
 
   @Override
-  void delete(Cercle t) throws Exception {
+  public void delete(Cercle t) throws NonExistentFormeException {
     try (Connection conn = DriverManager.getConnection(dburl)) {
-      PreparedStatement prepare = conn.prepareStatement("DELETE FROM Cercle WHERE nom = ?");
+      PreparedStatement prepare = conn.prepareStatement("DELETE FROM Cercle WHERE nom = '?'");
       prepare.setString(1, t.getName());
       int result = prepare.executeUpdate();
       if (result == 1) {
         System.out.println("Le cercle été supprimé");
       } else {
-        System.out.println("Un problème est survenu lors de la suppression");
+        throw new NonExistentFormeException();
       }
     } catch (SQLException e) {
       e.printStackTrace();
@@ -80,15 +82,16 @@ public class DaoCercle extends Dao<Cercle> {
   }
 
   @Override
-  Cercle read(String nom) throws Exception {
+  public Cercle read(String nom) throws NonExistentFormeException {
     Cercle c = null;
     try (Connection conn = DriverManager.getConnection(dburl)) {
-      PreparedStatement prepare = conn.prepareStatement("SELECT * FROM Cercle WHERE nom = ?");
+      PreparedStatement prepare = conn.prepareStatement("SELECT * FROM Cercle WHERE nom = '?'");
       prepare.setString(1, nom);
       ResultSet result = prepare.executeQuery();
 
       if (!result.next()) {
         System.out.println("Le cercle recherché n'existe pas");
+        throw new NonExistentFormeException();
       } else {
         // Crée un cerclee.
         c = new Cercle(result.getString("nom"),

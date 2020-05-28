@@ -12,6 +12,7 @@ import formes.CompositeFormes;
 import formes.Forme;
 import formes.Rectangle;
 import formes.Triangle;
+import ui.NonExistentFormeException;
 
 /**
  * Implémentation de la persistance pour les groupes de forme.
@@ -30,7 +31,7 @@ public class DaoComposite extends Dao<CompositeFormes> {
   private static String dburl = DbConn.dburl;
 
   @Override
-  void create(CompositeFormes t) throws Exception {
+  public void create(CompositeFormes t) throws NonExistentFormeException {
     try (Connection conn = DriverManager.getConnection(dburl)) {
       PreparedStatement prepare = conn.prepareStatement("INSERT INTO Groupe VALUES (?)");
       prepare.setString(1, t.getName());
@@ -40,9 +41,9 @@ public class DaoComposite extends Dao<CompositeFormes> {
       ArrayList<Forme> listeFormes = t.getChildsFormes();
       for (Forme temp : listeFormes) {
         // Vérifier que la forme est dans la base
-        Dao forme = (Dao) new Object();
+        Dao<Forme> forme = (Dao<Forme>) new Object();
         if (forme.read((temp.getName())) == null) {
-          forme.create(temp);
+          throw new NonExistentFormeException();
         }
         prepare = conn.prepareStatement("INSERT INTO FaitPartie VALUES (?, ?, ?)");
         prepare.setString(1, t.getName());
@@ -58,42 +59,42 @@ public class DaoComposite extends Dao<CompositeFormes> {
   }
 
   @Override
-  void update(CompositeFormes t) throws Exception {
+  public void update(CompositeFormes t) throws NonExistentFormeException {
     try (Connection conn = DriverManager.getConnection(dburl)) {
       PreparedStatement prepare =
-          conn.prepareStatement("SELECT * FROM FaitPartie WHERE nomGroupe = ?");
+          conn.prepareStatement("SELECT * FROM FaitPartie WHERE nomGroupe = '?'");
       prepare.setString(1, t.getName());
       ResultSet result = prepare.executeQuery();
       ArrayList<Forme> listeForme = t.getChildsFormes();
-      DaoCercle cercle = new DaoCercle();
-      DaoCarre carre = new DaoCarre();
-      DaoRectangle rectangle = new DaoRectangle();
-      DaoTriangle triangle = new DaoTriangle();
-      Cercle cercle1 = null;
-      Carre carre1 = null;
-      Rectangle rectangle1 = null;
-      Triangle triangle1 = null;
+      DaoCercle cercleDao = new DaoCercle();
+      DaoCarre carreDao = new DaoCarre();
+      DaoRectangle rectangleDao = new DaoRectangle();
+      DaoTriangle triangleDao = new DaoTriangle();
+      Cercle cercle = null;
+      Carre carre = null;
+      Rectangle rectangle = null;
+      Triangle triangle = null;
       int i = 0;
       while (result.next()) {
         switch (result.getString("typeForme")) {
           case "Carre":
-            carre1 = (Carre) listeForme.get(i);
-            carre.update(carre1);
+            carre = (Carre) listeForme.get(i);
+            carreDao.update(carre);
             i++;
             break;
           case "Cercle":
-            cercle1 = (Cercle) listeForme.get(i);
-            cercle.update(cercle1);
+            cercle = (Cercle) listeForme.get(i);
+            cercleDao.update(cercle);
             i++;
             break;
           case "Triangle":
-            triangle1 = (Triangle) listeForme.get(i);
-            triangle.update(triangle1);
+            triangle = (Triangle) listeForme.get(i);
+            triangleDao.update(triangle);
             i++;
             break;
           case "Rectangle":
-            rectangle1 = (Rectangle) listeForme.get(i);
-            rectangle.update(rectangle1);
+            rectangle = (Rectangle) listeForme.get(i);
+            rectangleDao.update(rectangle);
             i++;
             break;
           default:
@@ -113,9 +114,9 @@ public class DaoComposite extends Dao<CompositeFormes> {
    * groupe.
    */
   @Override
-  void delete(CompositeFormes t) throws Exception {
+  public void delete(CompositeFormes t) {
     try (Connection conn = DriverManager.getConnection(dburl)) {
-      PreparedStatement prepare = conn.prepareStatement("DELETE FROM Groupe WHERE nom = ?");
+      PreparedStatement prepare = conn.prepareStatement("DELETE FROM Groupe WHERE nom = '?'");
       prepare.setString(1, t.getName());
       prepare.executeUpdate();
       prepare.close();
@@ -127,11 +128,11 @@ public class DaoComposite extends Dao<CompositeFormes> {
   }
 
   @Override
-  CompositeFormes read(String nom) throws Exception {
+  public CompositeFormes read(String nom) throws NonExistentFormeException {
     CompositeFormes groupe = null;
     try (Connection conn = DriverManager.getConnection(dburl)) {
       PreparedStatement prepare =
-          conn.prepareStatement("SELECT FROM FaitPartie WHERE nomGroupe = ?");
+          conn.prepareStatement("SELECT FROM FaitPartie WHERE nomGroupe = '?'");
       prepare.setString(1, nom);
 
       ResultSet result = prepare.executeQuery();
